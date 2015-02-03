@@ -132,7 +132,7 @@ msgstr "Telefoonnummer"
 
 # Street
 msgid "label_street"
-msgstr "Straat"
+msgstr "Straatnaam"
 
 # ZIP
 msgid "label_zip"
