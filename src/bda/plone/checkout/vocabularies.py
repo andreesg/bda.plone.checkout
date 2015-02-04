@@ -33,7 +33,10 @@ def country_vocabulary():
     for cid, name in AVAILABLE_COUNTRIES:
         #ORIGINAL: if cid in ENABLED_COUNTRIES:
         # Add all countries to the backend options
-        ret.append((cid, name))
+        if cid == '528':
+            ret.insert(0, (cid, name))
+        else:
+            ret.append((cid, name))
     return ret
 
 
