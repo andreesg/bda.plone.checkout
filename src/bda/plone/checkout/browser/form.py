@@ -415,7 +415,6 @@ class CheckoutForm(Form, FormContext):
         else:
             p_name = data.fetch('checkout.payment_selection.payment').extracted
             bank_id = data.fetch('checkout.bank_selection.bank').extracted
-            print bank_id
             payments = Payments(self.context)
             payment = payments.get(p_name)
             self.finish_redirect_url = payment.init_url(str(uid), str(bank_id))
