@@ -282,7 +282,7 @@ class BankSelection(FieldsProvider):
         if from_cookie and not from_request:
             return from_cookie
 
-        return form_request
+        return from_request
 
 provider_registry.add(BankSelection)
 
