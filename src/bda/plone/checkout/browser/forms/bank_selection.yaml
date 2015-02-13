@@ -11,5 +11,4 @@ widgets:
     value: context.get_bank
     props:
         vocabulary: expr:context.banks_vocabulary
-        display_proxy: True
     mode: expr:context.mode
