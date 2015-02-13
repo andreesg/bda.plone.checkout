@@ -245,9 +245,8 @@ class PaymentSelection(FieldsProvider):
 
 provider_registry.add(PaymentSelection)
 
-"""
 class BankSelection(FieldsProvider):
-    fields_template = 'bda.plone.checkout.browser:forms/payment_selection.yaml'
+    fields_template = 'bda.plone.checkout.browser:forms/bank_selection.yaml'
     fields_name = 'bank_selection'
 
     @property
@@ -255,12 +254,36 @@ class BankSelection(FieldsProvider):
         cart_data = get_data_provider(self.context, self.request)
         return not cart_data.total
 
+    @property
     def banks(self):
-        return
+        banks = ["ING", "ABN_AMRO"]
+        return banks
+
+    @property
+    def banks_vocabulary(self):
+        vocab = list()
+        for bank in self.banks:
+            vocab.append((bank, bank))
+        return vocab
 
     def get_bank(self, widget, data):
-        return
-"""
+        request = self.request
+        from_request = request.get(widget.dottedpath)
+        from_cookie = request.cookies.get('bank_selection')
+
+        if from_request and from_cookie != from_request:
+            request.response.setCookie(
+                'bank_selection', from_request, quoted=False, path='/')
+
+        if not from_request and not from_cookie:
+            return "ING"
+
+        if from_cookie and not from_request:
+            return from_cookie
+
+        return form_request
+
+provider_registry.add(BankSelection)
 
 class OrderComment(FieldsProvider):
     fields_template = 'bda.plone.checkout.browser:forms/order_comment.yaml'
