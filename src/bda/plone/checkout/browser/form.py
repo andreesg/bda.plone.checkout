@@ -232,6 +232,7 @@ class PaymentSelection(FieldsProvider):
 
     @property
     def payments(self):
+        print Payments(self.context)
         return Payments(self.context)
 
     @property
@@ -239,10 +240,27 @@ class PaymentSelection(FieldsProvider):
         return self.payments.vocab
 
     def get_payment(self, widget, data):
+        print self.request.get(widget.dottedpath, self.payments.default)
         return self.request.get(widget.dottedpath, self.payments.default)
 
 provider_registry.add(PaymentSelection)
 
+"""
+class BankSelection(FieldsProvider):
+    fields_template = 'bda.plone.checkout.browser:forms/payment_selection.yaml'
+    fields_name = 'bank_selection'
+
+    @property
+    def skip(self):
+        cart_data = get_data_provider(self.context, self.request)
+        return not cart_data.total
+
+    def banks(self):
+        return
+
+    def get_bank(self, widget, data):
+        return
+"""
 
 class OrderComment(FieldsProvider):
     fields_template = 'bda.plone.checkout.browser:forms/order_comment.yaml'
