@@ -7,10 +7,9 @@ widgets:
         tag: h2
         text: i18n:heading_bank_selection:Bank
 - bank:
-    factory: "field:error:select"
+    factory: "#field:select"
     value: context.get_bank
     props:
-        format: radio
         vocabulary: expr:context.banks_vocabulary
         display_proxy: True
     mode: expr:context.mode
