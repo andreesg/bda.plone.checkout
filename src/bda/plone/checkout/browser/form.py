@@ -235,7 +235,6 @@ class PaymentSelection(FieldsProvider):
 
     @property
     def payments(self):
-        print Payments(self.context)
         return Payments(self.context)
 
     @property
@@ -243,7 +242,6 @@ class PaymentSelection(FieldsProvider):
         return self.payments.vocab
 
     def get_payment(self, widget, data):
-        print self.request.get(widget.dottedpath, self.payments.default)
         return self.request.get(widget.dottedpath, self.payments.default)
 
 provider_registry.add(PaymentSelection)
@@ -260,7 +258,7 @@ class BankSelection(FieldsProvider):
     @property
     def banks(self):
         banks = get_banks()
-        print banks
+        print banks.banks
         return ["ING", "ABN_AMRO"]
 
     @property
