@@ -10,7 +10,8 @@ widgets:
     factory: "#field:select"
     value: context.get_bank
     props:
-        label: 
+        label: Bank
+        required: i18n:bank_is_required:Bank is required
         vocabulary: expr:context.banks_vocabulary
         display_proxy: True
     mode: expr:context.mode
