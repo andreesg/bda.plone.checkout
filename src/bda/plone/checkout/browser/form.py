@@ -258,14 +258,13 @@ class BankSelection(FieldsProvider):
     @property
     def banks(self):
         banks = get_banks()
-        print banks.banks
-        return ["ING", "ABN_AMRO"]
+        return banks.banks
 
     @property
     def banks_vocabulary(self):
         vocab = list()
         for bank in self.banks:
-            vocab.append((bank, bank))
+            vocab.append((bank['id'], bank['name']))
         return vocab
 
     def get_bank(self, widget, data):
