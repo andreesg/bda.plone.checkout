@@ -24,6 +24,9 @@ from bda.plone.payment import Payments
 from bda.plone.shipping import Shippings
 import plone.api
 
+from bda.plone.easyidealpayment.easyideal_payment import get_banks
+
+
 TERMS_AND_CONDITONS_ID = 'agb'
 
 
@@ -256,8 +259,9 @@ class BankSelection(FieldsProvider):
 
     @property
     def banks(self):
-        banks = ["ING", "ABN_AMRO"]
-        return banks
+        banks = get_banks()
+        print banks
+        return ["ING", "ABN_AMRO"]
 
     @property
     def banks_vocabulary(self):
