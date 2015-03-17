@@ -13,6 +13,7 @@
                 delivery_address.hide();
             }
         };
+
         var fld_name = "checkout.delivery_address.alternative_delivery";
         var input = $('input[name="' + fld_name + '"]');
         toggle(input);
@@ -25,6 +26,32 @@
             subtype: 'ajax',
             filter: common_content_filter,
             cssclass: 'overlay-terms-and-condition',
+        });
+
+        var payment_checked = $("input:radio[name='checkout.payment_method_selection.payment_method']:checked");
+        if (payment_checked.val() != undefined) {
+            if (payment_checked.val() != 'ideal') {
+                $("#tag-checkout-bank_selection-heading").hide();
+                $("#field-checkout-bank_selection-bank").hide();
+            }
+        }
+
+        if ($("#display-checkout-payment_method_selection-payment_method").html() == "Creditcard") {
+            $("#tag-checkout-bank_selection-heading").hide();
+            $("#field-checkout-bank_selection-bank").hide();
+        }
+        
+        var payment_input = $("input:radio[name='checkout.payment_method_selection.payment_method']")
+        payment_input.change(function() {
+            if ($(this).is(":checked")) {
+                if ($(this).val() == "creditcard") {
+                    $("#tag-checkout-bank_selection-heading").hide();
+                    $("#field-checkout-bank_selection-bank").hide();
+                } else {
+                    $("#tag-checkout-bank_selection-heading").show();
+                    $("#field-checkout-bank_selection-bank").show();
+                }
+            }
         });
         
     });

@@ -246,6 +246,46 @@ class PaymentSelection(FieldsProvider):
 
 provider_registry.add(PaymentSelection)
 
+class PaymentMethodSelection(FieldsProvider):
+    fields_template = 'bda.plone.checkout.browser:forms/payment_method_selection.yaml'
+    fields_name = 'payment_method_selection'
+
+    @property
+    def skip(self):
+        cart_data = get_data_provider(self.context, self.request)
+        return not cart_data.total
+
+    @property
+    def methods(self):
+        methods = [{"name":"iDeal", "id":"ideal"}, {"name":"Creditcard", "id":"creditcard"}]
+        return methods
+
+    @property
+    def methods_vocabulary(self):
+        vocab = list()
+        for method in self.methods:
+            vocab.append((method['id'], method['name']))
+        return vocab
+
+    def get_method(self, widget, data):
+        request = self.request
+        from_request = request.get(widget.dottedpath)
+        from_cookie = request.cookies.get('payment_method_selection')
+
+        if from_request and from_cookie != from_request:
+            request.response.setCookie(
+                'payment_method_selection', from_request, quoted=False, path='/')
+
+        if not from_request and not from_cookie:
+            return "ideal"
+
+        if from_cookie and not from_request:
+            return from_cookie
+
+        return from_request
+
+provider_registry.add(PaymentMethodSelection)
+
 class BankSelection(FieldsProvider):
     fields_template = 'bda.plone.checkout.browser:forms/bank_selection.yaml'
     fields_name = 'bank_selection'
@@ -415,8 +455,9 @@ class CheckoutForm(Form, FormContext):
         else:
             p_name = data.fetch('checkout.payment_selection.payment').extracted
             bank_id = data.fetch('checkout.bank_selection.bank').extracted
+            payment_method = data.fetch('checkout.payment_method_selection.payment_method').extracted
             payments = Payments(self.context)
             payment = payments.get(p_name)
-            self.finish_redirect_url = payment.init_url(str(uid), str(bank_id))
+            self.finish_redirect_url = payment.init_url(str(uid), str(bank_id), str(payment_method))
         event = CheckoutDone(self.context, self.request, uid)
         notify(event)
