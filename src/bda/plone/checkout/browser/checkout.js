@@ -33,23 +33,27 @@
             if (payment_checked.val() != 'ideal') {
                 $("#tag-checkout-bank_selection-heading").hide();
                 $("#field-checkout-bank_selection-bank").hide();
+                $("#input-checkout-bank_selection-bank-").attr('value', 'creditcard');
             }
         }
 
         if ($("#display-checkout-payment_method_selection-payment_method").html() == "Creditcard") {
             $("#tag-checkout-bank_selection-heading").hide();
             $("#field-checkout-bank_selection-bank").hide();
+            $("#input-checkout-bank_selection-bank-").attr('value', 'creditcard');
         }
-        
+
         var payment_input = $("input:radio[name='checkout.payment_method_selection.payment_method']")
         payment_input.change(function() {
             if ($(this).is(":checked")) {
                 if ($(this).val() == "creditcard") {
                     $("#tag-checkout-bank_selection-heading").hide();
                     $("#field-checkout-bank_selection-bank").hide();
+                    $("#input-checkout-bank_selection-bank-").attr('value','creditcard');
                 } else {
                     $("#tag-checkout-bank_selection-heading").show();
                     $("#field-checkout-bank_selection-bank").show();
+                    $("#input-checkout-bank_selection-bank-").attr('value','');
                 }
             }
         });

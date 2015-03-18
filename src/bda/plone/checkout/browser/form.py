@@ -305,6 +305,9 @@ class BankSelection(FieldsProvider):
         vocab = list()
         for bank in self.banks:
             vocab.append((bank['id'], bank['name']))
+        
+        vocab.insert(0, ('', _(u'Kies uw bank')))
+
         return vocab
 
     def get_bank(self, widget, data):

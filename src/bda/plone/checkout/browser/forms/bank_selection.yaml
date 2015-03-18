@@ -10,7 +10,7 @@ widgets:
     factory: "#field:select"
     value: context.get_bank
     props:
-        label: Bank
+        label: i18n:bank_description:Kies uw bank en klik op "Verder" om bij uw bank met iDEAL te betalen
         required: i18n:bank_is_required:Bank is required
         vocabulary: expr:context.banks_vocabulary
         display_proxy: True
