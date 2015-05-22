@@ -257,7 +257,7 @@ class PaymentMethodSelection(FieldsProvider):
 
     @property
     def methods(self):
-        methods = [{"name":"iDeal", "id":"ideal"}, {"name":"Creditcard", "id":"creditcard"}]
+        methods = [{"name":"iDEAL", "id":"ideal"}, {"name":"Creditcard", "id":"creditcard"}]
         return methods
 
     @property
