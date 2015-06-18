@@ -20,7 +20,7 @@
     
     <h1 class="documentFirstHeading" i18n:translate="checkout">Your Order</h1>
 
-    <div class="tickets-breadcrumbs original">
+    <div class="tickets-breadcrumbs original" tal:condition="tickets">
       <a href="@@cart"
        class="btn step step-1" type="button">1. Tickets</a>
 

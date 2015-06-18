@@ -1,6 +1,7 @@
  
 <div id="cart"
-     i18n:domain="bda.plone.cart" class="checkout final-checkout">
+     i18n:domain="bda.plone.cart" class="checkout final-checkout"
+     tal:define="tickets python: '/tickets' in context.absolute_url()">
 
 
      <style type="text/css">
@@ -11,7 +12,7 @@
 
 
 
-  <div class="tickets-breadcrumbs final-checkout">
+  <div class="tickets-breadcrumbs final-checkout" tal:condition="tickets">
       <a href="@@cart"
        class="btn step step-1" type="button">1. Tickets</a>
 
