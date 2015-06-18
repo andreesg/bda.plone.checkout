@@ -42,6 +42,7 @@ class ProviderRegistry(object):
         return self.providers.__iter__()
 
 provider_registry = ProviderRegistry()
+tickets_provider_registry = ProviderRegistry()
 
 
 CHECKOUT = 0
@@ -121,6 +122,7 @@ class CartSummary(FieldsProvider):
             'text': self.context.restrictedTraverse('@@cart_overview')()})
 
 provider_registry.add(CartSummary)
+tickets_provider_registry.add(CartSummary)
 
 
 class PersonalData(FieldsProvider):
@@ -132,6 +134,7 @@ class PersonalData(FieldsProvider):
         return [('-', '')] + gender_vocabulary()
 
 provider_registry.add(PersonalData)
+tickets_provider_registry.add(PersonalData)
 
 
 class BillingAddress(FieldsProvider):
@@ -223,7 +226,6 @@ class ShippingSelection(FieldsProvider):
 
 provider_registry.add(ShippingSelection)
 
-
 class PaymentSelection(FieldsProvider):
     fields_template = 'bda.plone.checkout.browser:forms/payment_selection.yaml'
     fields_name = 'payment_selection'
@@ -245,6 +247,7 @@ class PaymentSelection(FieldsProvider):
         return self.request.get(widget.dottedpath, self.payments.default)
 
 provider_registry.add(PaymentSelection)
+tickets_provider_registry.add(PaymentSelection)
 
 class PaymentMethodSelection(FieldsProvider):
     fields_template = 'bda.plone.checkout.browser:forms/payment_method_selection.yaml'
@@ -285,6 +288,7 @@ class PaymentMethodSelection(FieldsProvider):
         return from_request
 
 provider_registry.add(PaymentMethodSelection)
+tickets_provider_registry.add(PaymentMethodSelection)
 
 class BankSelection(FieldsProvider):
     fields_template = 'bda.plone.checkout.browser:forms/bank_selection.yaml'
@@ -328,6 +332,7 @@ class BankSelection(FieldsProvider):
         return from_request
 
 provider_registry.add(BankSelection)
+tickets_provider_registry.add(BankSelection)
 
 class OrderComment(FieldsProvider):
     fields_template = 'bda.plone.checkout.browser:forms/order_comment.yaml'
@@ -343,7 +348,7 @@ class OrderComment(FieldsProvider):
         return ''
 
 provider_registry.add(OrderComment)
-
+tickets_provider_registry.add(OrderComment)
 
 class AcceptTermsAndConditions(FieldsProvider):
     fields_template = 'bda.plone.checkout.browser:forms/accept_terms.yaml'
@@ -379,13 +384,97 @@ class AcceptTermsAndConditions(FieldsProvider):
         return data.extracted
 
 provider_registry.add(AcceptTermsAndConditions)
-
+tickets_provider_registry.add(AcceptTermsAndConditions)
 
 class CheckoutForm(Form, FormContext):
     action_resource = '@@checkout'
     # in order to provide your own registry, subclass CheckoutForm and and
     # override ``provider_registry``
     provider_registry = provider_registry
+
+    def prepare(self):
+        if not readcookie(self.request):
+            raise Redirect(self.context.absolute_url())
+        checkout = self.form_context is CHECKOUT
+        form_class = checkout and 'mode_edit' or 'mode_display'
+        self.form = factory('#form', name='checkout', props={
+            'action': self.form_action,
+            'class_add': form_class})
+        for fields_factory in self.provider_registry:
+            fields_factory(self.context, self.request).extend(self.form)
+        # checkout data input
+        if checkout:
+            self.form['checkout_back'] = factory('submit', props={
+                'label': _('back', 'Back'),
+                'action': 'checkout_back',
+                'handler': None,
+                'next': self.checkout_back,
+                'skip': True})
+            self.form['next'] = factory('submit', props={
+                'label': _('next', 'Next'),
+                'action': 'next',
+                'handler': None,
+                'next': self.checkout_summary})
+        # checkout confirmation
+        else:
+            self.form['confirm_back'] = factory('submit', props={
+                'label': _('back', 'Back'),
+                'action': 'confirm_back',
+                'handler': None,
+                'next': self.confirm_back})
+            self.form['finish'] = factory('submit', props={
+                'class': 'prevent_if_no_longer_available',
+                'label': _('finish', 'Order now'),
+                'action': 'finish',
+                'handler': self.finish,
+                'next': self.checkout_done})
+
+    def checkout_back(self, request):
+        raise Redirect('%s/@@cart' % self.context.absolute_url())
+
+    def confirm_back(self, request):
+        self.prepare()
+        return self.form(request=request)
+
+    def checkout_summary(self, request):
+        self.request['checkout_confirm'] = '1'
+        self.prepare()
+        return self.form(request=request)
+
+    def checkout_done(self, request):
+        transaction.commit()
+        raise Redirect(self.finish_redirect_url)
+
+    def finish(self, widget, data):
+        providers = [fields_factory(self.context, self.request)
+                     for fields_factory in self.provider_registry]
+        to_adapt = (self.context, self.request)
+        checkout_adapter = getMultiAdapter(to_adapt, ICheckoutAdapter)
+        try:
+            uid = checkout_adapter.save(providers, widget, data)
+        except CheckoutError:
+            transaction.abort()
+            self.checkout_back(self.request)
+        checkout_adapter.clear_session()
+        checkout_settings = ICheckoutSettings(self.context)
+        if checkout_settings.skip_payment(uid):
+            self.finish_redirect_url = \
+                checkout_settings.skip_payment_redirect_url(uid)
+        else:
+            p_name = data.fetch('checkout.payment_selection.payment').extracted
+            bank_id = data.fetch('checkout.bank_selection.bank').extracted
+            payment_method = data.fetch('checkout.payment_method_selection.payment_method').extracted
+            payments = Payments(self.context)
+            payment = payments.get(p_name)
+            self.finish_redirect_url = payment.init_url(str(uid), str(bank_id), str(payment_method))
+        event = CheckoutDone(self.context, self.request, uid)
+        notify(event)
+
+class TicketCheckoutForm(Form, FormContext):
+    action_resource = '@@checkout'
+    # in order to provide your own registry, subclass CheckoutForm and and
+    # override ``provider_registry``
+    provider_registry = tickets_provider_registry
 
     def prepare(self):
         if not readcookie(self.request):

@@ -1,5 +1,32 @@
+ 
 <div id="cart"
-     i18n:domain="bda.plone.cart">
+     i18n:domain="bda.plone.cart" class="checkout final-checkout">
+
+
+     <style type="text/css">
+      div.tickets-breadcrumbs.original {
+        display: none !important;
+      }
+     </style>
+
+
+
+  <div class="tickets-breadcrumbs final-checkout">
+      <a href="@@cart"
+       class="btn step step-1" type="button">1. Tickets</a>
+
+      <a href="javascript:history.back()"
+       class="btn step step-2" type="button">2. Persoonsgegevens</a>
+
+      <a href=""
+       class="btn step step-3 selected" type="button">3. Gegevens controleren</a>
+
+      <a href=""
+       class="btn disabled step step-4" type="button">4. Betalen</a>
+  </div>
+
+  <h2 i18n:translate="">Winkelwagen</h2><br>
+ 
 
   <span style="display:none;"
         class="cart_execution_context">checkout</span>
@@ -22,7 +49,7 @@
         <li>
           <span class="price">
             <span i18n:translate="price">Price:</span>
-            <span class="cart_item_price">Price</span>
+            <span class="cart_item_price">Price</span> <span>€</span>
           </span>
         </li>
       </ul>
@@ -69,13 +96,13 @@
         </td>
       </tr>
       <tr class="shipping" style="display: none;">
-        <td>
+        <!--<td>
           <span i18n:translate="summary_shipping">Shipping</span>:
           <span class="shipping_label"></span>
           <span class="shipping_description"></span>:
         </td>
         <td class="cart_shipping">0.00</td>
-        <td tal:content="currency" tal:condition="currency">EUR</td>
+        <td tal:content="currency" tal:condition="currency">EUR</td>-->
       </tr>
       <tr>
         <td><strong i18n:translate="summary_total">Total:</strong></td>

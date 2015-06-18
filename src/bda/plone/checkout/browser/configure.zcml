@@ -27,6 +27,13 @@
 
   <browser:page
       for="*"
+      name="ticketscheckoutform"
+      class=".form.TicketCheckoutForm"
+      permission="zope2.View"
+      layer="..interfaces.ICheckoutExtensionLayer"/>
+
+  <browser:page
+      for="*"
       name="cart_overview"
       class="bda.plone.cart.browser.CartView"
       template="cart_overview.pt"
