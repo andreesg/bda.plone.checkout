@@ -545,11 +545,14 @@ class TicketCheckoutForm(Form, FormContext):
             self.finish_redirect_url = \
                 checkout_settings.skip_payment_redirect_url(uid)
         else:
-            p_name = data.fetch('checkout.payment_selection.payment').extracted
-            bank_id = data.fetch('checkout.bank_selection.bank').extracted
-            payment_method = data.fetch('checkout.payment_method_selection.payment_method').extracted
-            payments = Payments(self.context)
-            payment = payments.get(p_name)
-            self.finish_redirect_url = payment.init_url(str(uid), str(bank_id), str(payment_method))
+            try:
+                p_name = data.fetch('checkout.payment_selection.payment').extracted
+                bank_id = data.fetch('checkout.bank_selection.bank').extracted
+                payment_method = data.fetch('checkout.payment_method_selection.payment_method').extracted
+                payments = Payments(self.context)
+                payment = payments.get(p_name)
+                self.finish_redirect_url = payment.init_url(str(uid), str(bank_id), str(payment_method))
+            except:
+                pass
         event = CheckoutDone(self.context, self.request, uid)
         notify(event)
