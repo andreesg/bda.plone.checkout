@@ -35,8 +35,9 @@
     </div>
 
     <tal:checkout replace="structure context/@@checkoutform" tal:condition="not:tickets"/>
-    <tal:tickets_checkout replace="structure context/@@ticketscheckoutform" tal:condition="tickets"/>
-
+    <div class="tickets-checkout">
+      <tal:tickets_checkout replace="structure context/@@ticketscheckoutform" tal:condition="tickets"/>
+    </div>
   </tal:main-macro>
 </metal:main>
 
