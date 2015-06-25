@@ -25,10 +25,11 @@ logger = logging.getLogger('bda.plone.checkout')
 @implementer(ICheckoutEvent)
 class CheckoutEvent(object):
 
-    def __init__(self, context, request, uid):
+    def __init__(self, context, request, uid, download_link="done"):
         self.context = context
         self.request = request
         self.uid = uid
+        self.download_link = download_link
 
 
 @implementer(ICheckoutDone)
