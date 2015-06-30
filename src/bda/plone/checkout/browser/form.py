@@ -23,7 +23,6 @@ from bda.plone.checkout.vocabularies import gender_vocabulary
 from bda.plone.payment import Payments
 from bda.plone.shipping import Shippings
 import plone.api
-
 from bda.plone.molliepayment.mollie_payment import get_banks
 
 
@@ -461,6 +460,7 @@ class CheckoutForm(Form, FormContext):
         checkout_adapter.clear_session()
         checkout_settings = ICheckoutSettings(self.context)
         if checkout_settings.skip_payment(uid):
+
             self.finish_redirect_url = \
                 checkout_settings.skip_payment_redirect_url(uid)
         else:
