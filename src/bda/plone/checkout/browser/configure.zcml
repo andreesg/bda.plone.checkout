@@ -16,6 +16,7 @@
       name="checkout"
       template="view.pt"
       permission="zope2.View"
+      class=".CheckoutView"
       layer="..interfaces.ICheckoutExtensionLayer"/>
 
   <browser:page
