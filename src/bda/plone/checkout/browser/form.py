@@ -460,7 +460,6 @@ class CheckoutForm(Form, FormContext):
         checkout_adapter.clear_session()
         checkout_settings = ICheckoutSettings(self.context)
         if checkout_settings.skip_payment(uid):
-
             self.finish_redirect_url = \
                 checkout_settings.skip_payment_redirect_url(uid)
         else:
@@ -470,6 +469,7 @@ class CheckoutForm(Form, FormContext):
             payments = Payments(self.context)
             payment = payments.get(p_name)
             self.finish_redirect_url = payment.init_url(str(uid), str(bank_id), str(payment_method))
+        
         event = CheckoutDone(self.context, self.request, uid)
         notify(event)
 

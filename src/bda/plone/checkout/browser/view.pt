@@ -19,8 +19,8 @@
     tal:define="tickets python: '/tickets' in context.absolute_url();
                 tickets_header python: view.get_tickets_header(tickets);">
     
-    <div id="cart-page-header" tal:condition="tickets" tal:attributes="style python: 'background-image:url(%s)' %(tickets_header)">
-      <h1 class="documentFirstHeading" tal:condition="tickets">Your Order</h1>
+    <div id="cart-page-header" tal:attributes="style python: 'background-image:url(%s)' %(tickets_header)">
+      <h1 class="documentFirstHeading">Your Order</h1>
       
       <div class="tickets-breadcrumbs original" tal:condition="tickets">
         <a href="@@cart"
@@ -37,8 +37,6 @@
       </div>
 
     </div>
-
-    <h1 class="documentFirstHeading" i18n:translate="checkout" tal:condition="not:tickets">Your Order</h1>
 
     <tal:checkout replace="structure context/@@checkoutform" tal:condition="not:tickets"/>
 
