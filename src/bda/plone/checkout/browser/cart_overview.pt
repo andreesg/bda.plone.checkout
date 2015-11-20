@@ -110,14 +110,14 @@
           <strong tal:content="currency" class="currency">EUR</strong>
         </td>
       </tr>
-      <tr class="shipping" style="display: none;">
-        <!--<td>
+      <tr class="shipping">
+        <td>
           <span i18n:translate="summary_shipping">Shipping</span>:
           <span class="shipping_label"></span>
           <span class="shipping_description"></span>:
         </td>
         <td class="cart_shipping">0.00</td>
-        <td tal:content="currency" tal:condition="currency">EUR</td>-->
+        <td tal:content="currency" tal:condition="currency">EUR</td>
       </tr>
       <tr>
         <td><strong i18n:translate="summary_total">Total:</strong></td>
