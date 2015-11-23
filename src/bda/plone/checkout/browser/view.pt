@@ -20,7 +20,7 @@
                 tickets_header python: view.get_tickets_header(tickets);">
     
     <div id="cart-page-header" tal:attributes="style python: 'background-image:url(%s)' %(tickets_header)">
-      <h1 class="documentFirstHeading">Your Order</h1>
+      <h1 class="documentFirstHeading" i18n:translate="checkout">Your Order</h1>
       
       <div class="tickets-breadcrumbs original" tal:condition="tickets">
         <a href="@@cart"
