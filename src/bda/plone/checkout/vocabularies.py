@@ -16,6 +16,7 @@ AVAILABLE_COUNTRIES = [
     (country.numeric, safe_unicode(_c(country.name))) \
         for country in pycountry.countries
 ]
+
 # patch this list to modify available countries
 ENABLED_COUNTRIES = [
     '040', # Austria

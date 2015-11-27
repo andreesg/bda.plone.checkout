@@ -43,6 +43,7 @@ widgets:
     value: context.get_value
     props:
         label: i18n:label_phone:Phone
+        required: i18n:phone_is_required:Phone is required
         display_proxy: True
     mode: expr:context.mode
 - company:
