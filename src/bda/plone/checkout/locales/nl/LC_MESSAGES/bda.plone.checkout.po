@@ -19,7 +19,7 @@ msgstr ""
 #. Default: "Back"
 #: browser/form.py:312
 msgid "back"
-msgstr "Verder winkelen"
+msgstr "Terug"
 
 #. Default: "Your Order"
 #: browser/view.pt:20
