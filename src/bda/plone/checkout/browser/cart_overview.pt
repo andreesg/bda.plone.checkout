@@ -30,7 +30,7 @@
        class="btn step step-3 selected" type="button" i18n:translate="">3. Verify details</a>
 
       <a href=""
-       class="btn disabled step step-4" type="button" i18n:translate="">4. Betalen</a>
+       class="btn disabled step step-4" type="button" i18n:translate="">4. Payment</a>
   </div>
 
   <div class="tickets-breadcrumbs final-checkout" tal:condition="not:tickets">
