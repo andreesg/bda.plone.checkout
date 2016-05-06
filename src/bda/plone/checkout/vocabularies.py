@@ -17,6 +17,7 @@ AVAILABLE_COUNTRIES = [
         for country in pycountry.countries
 ]
 
+
 # patch this list to modify available countries
 ENABLED_COUNTRIES = [
     '040', # Austria
