@@ -15,10 +15,11 @@
       }
 
       .template-checkout #cart {
-      padding-top: 0px !important;
+        padding-top: 0px !important;
       }
 
      </style>
+     
   <div class="tickets-breadcrumbs final-checkout" tal:condition="tickets">
       <a href="@@cart"
        class="btn step step-1" type="button" i18n:translate="">1. Tickets</a>
