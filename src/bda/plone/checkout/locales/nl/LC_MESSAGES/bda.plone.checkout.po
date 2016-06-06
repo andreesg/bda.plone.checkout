@@ -200,3 +200,8 @@ msgstr "3. Gegevens controleren"
 #: browser/ticket_summary.pt
 msgid "4. Payment"
 msgstr "4. Betalen"
+
+#: browser/ticket_summary.pt
+msgid "bank_description"
+msgstr "Kies uw bank en klik op "Verder" om bij uw bank met iDEAL te betalen"
+

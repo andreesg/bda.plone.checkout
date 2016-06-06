@@ -111,7 +111,7 @@ msgstr "Country"
 
 #. Default: "Email"
 msgid "label_email"
-msgstr "Email"
+msgstr "Email address"
 
 # First Name
 msgid "label_firstname"
@@ -119,15 +119,15 @@ msgstr "First Name"
 
 #. Default: "Gender"
 msgid "label_gender"
-msgstr "Salutation"
+msgstr "Title"
 
 #. Default: "Name"
 msgid "label_lastname"
-msgstr "Name"
+msgstr "Surname"
 
 #. Default: "Phone"
 msgid "label_phone"
-msgstr "Phone"
+msgstr "Phone number"
 
 #. Default: "Street"
 msgid "label_street"
@@ -187,4 +187,9 @@ msgstr "Yes"
 #. Default: "ZIP is required"
 msgid "zip_is_required"
 msgstr "ZIP is required"
+
+#: browser/ticket_summary.pt
+msgid "bank_description"
+msgstr "Choose your bank and click on 'Next' to pay with iDEAL"
+
 
