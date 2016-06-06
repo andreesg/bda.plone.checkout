@@ -205,3 +205,8 @@ msgstr "4. Betalen"
 msgid "bank_description"
 msgstr "Kies uw bank en klik op "Verder" om bij uw bank met iDEAL te betalen"
 
+#: browser/ticket_summary.pt
+msgid "choose_bank_label"
+msgstr "Kies uw bank"
+
+

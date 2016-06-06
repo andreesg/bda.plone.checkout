@@ -192,4 +192,7 @@ msgstr "ZIP is required"
 msgid "bank_description"
 msgstr "Choose your bank and click on 'Next' to pay with iDEAL"
 
+#: browser/ticket_summary.pt
+msgid "choose_bank_label"
+msgstr "Choose your bank"
 

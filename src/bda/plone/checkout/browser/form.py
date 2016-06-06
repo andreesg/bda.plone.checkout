@@ -312,7 +312,7 @@ class BankSelection(FieldsProvider):
         for bank in self.banks:
             vocab.append((bank['id'], bank['name']))
         
-        vocab.insert(0, ('', _(u'Kies uw bank')))
+        vocab.insert(0, ('', _(u'choose_bank_label', default="Kies uw bank")))
 
         return vocab
 
