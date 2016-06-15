@@ -1,5 +1,3 @@
-msgid ""
-msgstr ""
 "Project-Id-Version: bda.plone.checkout\n"
 "POT-Creation-Date: 2015-01-28 14:42+0000\n"
 "PO-Revision-Date: 2015-01-28 15:13+0100\n"
@@ -203,7 +201,7 @@ msgstr "4. Betalen"
 
 #: browser/ticket_summary.pt
 msgid "bank_description"
-msgstr "Kies uw bank en klik op "Verder" om bij uw bank met iDEAL te betalen"
+msgstr "Kies uw bank en klik op ''Verder'' om bij uw bank met iDEAL te betalen"
 
 #: browser/ticket_summary.pt
 msgid "choose_bank_label"
