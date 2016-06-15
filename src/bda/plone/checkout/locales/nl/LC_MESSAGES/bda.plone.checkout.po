@@ -46,7 +46,7 @@ msgstr "Accepteer onze algemene voorwaarden"
 #. Default: "Female"
 #: vocabularies.py:12
 msgid "female"
-msgstr "Vrouw"
+msgstr "Mw."
 
 #. Default: "Order now"
 #: browser/form.py:331
@@ -120,7 +120,7 @@ msgstr "Voornaam"
 
 # Gender
 msgid "label_gender"
-msgstr "Geslacht"
+msgstr "Aanhef"
 
 # Last Name
 msgid "label_lastname"
@@ -145,7 +145,7 @@ msgstr "Achternaam is vereist"
 #. Default: "Male"
 #: vocabularies.py:11
 msgid "male"
-msgstr "Man"
+msgstr "Dhr."
 
 #. Default: "Next"
 #: browser/form.py:318
