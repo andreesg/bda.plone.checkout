@@ -1,7 +1,7 @@
  
 <div id="cart"
      i18n:domain="bda.plone.cart" class="checkout final-checkout"
-     tal:define="tickets python: '/tickets' in context.absolute_url()"
+     tal:define="tickets python: view.is_ticket()"
      tal:attributes="class python: 'checkout final-checkout cart_tickets' if tickets else 'checkout final-checkout'">
 
 

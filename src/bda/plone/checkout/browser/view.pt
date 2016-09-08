@@ -16,7 +16,7 @@
 
 <metal:main fill-slot="main">
   <tal:main-macro metal:define-macro="main"
-    tal:define="tickets python: '/tickets' in context.absolute_url();
+    tal:define="tickets python: view.is_ticket();
                 tickets_header python: view.get_tickets_header(tickets);">
     
     <div id="cart-page-header" tal:attributes="style python: 'background-image:url(%s)' %(tickets_header)">
