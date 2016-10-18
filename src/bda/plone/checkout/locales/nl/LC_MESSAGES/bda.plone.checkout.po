@@ -1,3 +1,5 @@
+msgid ""
+msgstr ""
 "Project-Id-Version: bda.plone.checkout\n"
 "POT-Creation-Date: 2015-01-28 14:42+0000\n"
 "PO-Revision-Date: 2015-01-28 15:13+0100\n"
@@ -36,8 +38,7 @@ msgstr "Land is vereist"
 msgid "email_is_required"
 msgstr "E-mail is vereist"
 
-#. Default: "Please accept our terms and conditions."
-#: browser/form.py:286
+# Accept terms and conditions
 msgid "error_accept_terms_and_conditiond"
 msgstr "Accepteer onze algemene voorwaarden"
 
@@ -173,10 +174,20 @@ msgstr "Straat is vereist"
 msgid "terms_and_conditions"
 msgstr "Algemene voorwaarden"
 
+#. Default: "Terms and conditions"
+#: browser/form.py:267
+msgid "terms_and_conditions_tickets"
+msgstr "Algemene bezoekersvoorwaarden"
+
 #. Default: "I have read and accept the ${terms_and_conditions}"
 #: browser/form.py:272
 msgid "terms_and_conditions_text"
 msgstr "Ik heb de ${terms_and_conditions} gelezen en geaccepteerd"
+
+#. Default: "I have read and accept the ${terms_and_conditions_tickets}"
+#: browser/form.py:272
+msgid "terms_and_conditions_text_tickets"
+msgstr "Ik heb de ${terms_and_conditions_tickets} gelezen en geaccepteerd"
 
 #. Default: "Yes"
 #: browser/form.py:166

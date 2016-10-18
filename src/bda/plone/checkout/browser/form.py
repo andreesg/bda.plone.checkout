@@ -24,9 +24,10 @@ from bda.plone.payment import Payments
 from bda.plone.shipping import Shippings
 import plone.api
 from bda.plone.molliepayment.mollie_payment import get_banks
-
+from bda.plone.shop.utils import is_ticket as is_context_ticket
 
 TERMS_AND_CONDITONS_ID = 'agb'
+TERMS_AND_CONDITONS_ID_TICKETS = 'agb-tickets'
 
 
 class ProviderRegistry(object):
@@ -362,14 +363,26 @@ class AcceptTermsAndConditions(FieldsProvider):
         nav_root = plone.api.portal.get_navigation_root(self.context)
         base = nav_root.absolute_url()
         # XXX: url from config
-        tac_url = '%s/%s' % (base, TERMS_AND_CONDITONS_ID)
-        tac_label = _('terms_and_conditions', 'Terms and conditions')
+        is_ticket = is_context_ticket(self.context)
+        if is_ticket: 
+            tac_url = '%s/%s' % (base, TERMS_AND_CONDITONS_ID_TICKETS)
+            tac_label = _('terms_and_conditions_tickets', 'Terms and conditions')
+        else:
+            tac_url = '%s/%s' % (base, TERMS_AND_CONDITONS_ID)
+            tac_label = _('terms_and_conditions', 'Terms and conditions')
         tac_label = translate(tac_label, context=self.request)
         tac_link = '<a href="%s" class="terms_and_conditions">%s</a>'
         tac_link = tac_link % (tac_url, tac_label)
-        tac_text = _('terms_and_conditions_text',
+
+        if is_ticket:
+            tac_text = _('terms_and_conditions_text_tickets',
+                     'I have read and accept the ${terms_and_conditions_tickets}',
+                     mapping={'terms_and_conditions_tickets': tac_link})
+        else:
+            tac_text = _('terms_and_conditions_text',
                      'I have read and accept the ${terms_and_conditions}',
                      mapping={'terms_and_conditions': tac_link})
+
         return tac_text
 
     @property
