@@ -30,7 +30,10 @@ def country_vocabulary():
     """
     ret = list()
     for cid, name in AVAILABLE_COUNTRIES:
-        if cid in ENABLED_COUNTRIES:
+        """ CUSTOM """
+        if cid == '528':
+            ret.insert(0, (cid, name))
+        else:
             ret.append((cid, name))
     return ret
 

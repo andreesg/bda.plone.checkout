@@ -16,9 +16,23 @@
 
 <metal:main fill-slot="main">
   <tal:main-macro metal:define-macro="main">
+
+    <h1 class="documentFirstHeading" i18n:translate="your_order" i18n:domain="bda.plone.cart">Uw Bestelling</h1>
     
-    <h1 class="documentFirstHeading" i18n:translate="checkout">Your Order</h1>
-    
+    <div class="tickets-breadcrumbs original" i18n:domain="bda.plone.cart">
+      <a href="@@cart"
+       class="btn btn-default step step-1" type="submit" i18n:translate="step_tickets">1. Tickets</a>
+
+      <a 
+       class="btn btn-default selected step step-2" type="submit" i18n:translate="step_details">2. Gegevens</a>
+
+      <a 
+       class="btn btn-default disabled step step-3" type="submit" i18n:translate="step_details_control">3. Gegevens Controleren</a>
+
+      <a 
+       class="btn btn-default disabled step step-4" type="submit" i18n:translate="step_details_payment">4. Betalen</a>
+    </div>
+
     <tal:checkout replace="structure context/@@checkoutform" />
 
   </tal:main-macro>

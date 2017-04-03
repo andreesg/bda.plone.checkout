@@ -1,0 +1,17 @@
+factory: compound
+name: context.fields_name
+widgets:
+- heading:
+    factory: tag
+    props:
+        tag: h2
+        text: i18n:heading_ticket_occurrences:Kies een datum
+- ticket_occurrence:
+    factory: "#field:select"
+    value: context.get_occurrence
+    props:
+        label: i18n:ticket_occurrences_description:Wanneer wil je het Teyers Museum bezoeken?
+        required: i18n:ticket_occurrence_is_required:Occurrence is required
+        vocabulary: expr:context.tickets_occurrences_vocabulary
+        display_proxy: True
+    mode: expr:context.mode

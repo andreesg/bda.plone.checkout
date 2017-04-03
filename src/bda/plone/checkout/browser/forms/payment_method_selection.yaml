@@ -6,11 +6,12 @@ widgets:
     props:
         tag: h2
         text: i18n:heading_payment_selection:Payment
-- payment:
+- payment_method:
     factory: "field:error:select"
-    value: context.get_payment
+    value: context.get_method
     props:
         format: radio
-        vocabulary: expr:context.payment_vocabulary
+        required: i18n:payment_method_is_required:Payment method is required
+        vocabulary: expr:context.methods_vocabulary
         display_proxy: True
     mode: expr:context.mode

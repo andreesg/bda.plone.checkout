@@ -1,4 +1,5 @@
 import transaction
+from Acquisition import aq_parent
 from zExceptions import Redirect
 from zope.component import getMultiAdapter
 from zope.event import notify
@@ -23,6 +24,11 @@ from bda.plone.checkout.vocabularies import gender_vocabulary
 from bda.plone.payment import Payments
 from bda.plone.shipping import Shippings
 import plone.api
+from bda.plone.molliepayment.mollie_payment import get_banks
+from plone.app.uuid.utils import uuidToCatalogBrain
+from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
+from Products.CMFPlone.utils import getToolByName
+from bda.plone.ticketshop.common import ticket_title_generator
 
 TERMS_AND_CONDITONS_ID = 'agb'
 
@@ -120,6 +126,9 @@ class CartSummary(FieldsProvider):
 provider_registry.add(CartSummary)
 
 
+
+
+
 class PersonalData(FieldsProvider):
     fields_template = 'bda.plone.checkout.browser:forms/personal_data.yaml'
     fields_name = 'personal_data'
@@ -128,7 +137,69 @@ class PersonalData(FieldsProvider):
     def gender_vocabulary(self):
         return [('-', '')] + gender_vocabulary()
 
+    @property
+    def country_vocabulary(self):
+        return country_vocabulary()
+
 provider_registry.add(PersonalData)
+
+class TicketOccurrenceSelection(FieldsProvider):
+    fields_template = 'bda.plone.checkout.browser:forms/ticket_occurrence_selection.yaml'
+    fields_name = 'ticket_occurrence_selection'
+
+    @property
+    def skip(self):
+        cart_data = get_data_provider(self.context, self.request)
+        return not cart_data.total
+
+    @property
+    def ticket_occurrences(self):
+        cart_data = get_data_provider(self.context, self.request)
+        ticket_occs = []
+        cart_items = cart_data.data['cart_items']
+
+        for item in cart_items:
+            uid = item['cart_item_uid']
+            count = item['cart_item_count']
+            if count > 0:
+                brain = uuidToCatalogBrain(uid)
+                if brain.portal_type in ['Ticket']:
+                    obj = brain.getObject()
+                    catalog = getToolByName(obj, 'portal_catalog')
+                    occs = catalog(**{
+                        'portal_type': 'Ticket Occurrence',
+                        'path': '/'.join(obj.getPhysicalPath()),
+                    })
+                    ticket_occs = ticket_occs + list(occs)
+
+        return [b.getObject() for b in ticket_occs]
+
+    @property
+    def tickets_occurrences_vocabulary(self):
+        vocab = []
+        for ticket in self.ticket_occurrences:
+            vocab.append((ticket.UID(), ticket_title_generator(ticket).get('title', ticket.title)))
+        return vocab
+
+    def get_occurrence(self, widget, data):
+        request = self.request
+        from_request = request.get(widget.dottedpath)
+        from_cookie = request.cookies.get('ticket_occurrence_selection')
+
+        if from_request and from_cookie != from_request:
+            request.response.setCookie(
+                'ticket_occurrence_selection', from_request, quoted=False, path='/')
+
+        if not from_request and not from_cookie:
+            return None
+
+        if from_cookie and not from_request:
+            return from_cookie
+
+        return from_request
+
+
+#provider_registry.add(TicketOccurrenceSelection)
 
 
 class BillingAddress(FieldsProvider):
@@ -139,7 +210,7 @@ class BillingAddress(FieldsProvider):
     def country_vocabulary(self):
         return country_vocabulary()
 
-provider_registry.add(BillingAddress)
+"""provider_registry.add(BillingAddress)"""
 
 
 class DeliveryAddress(BillingAddress):
@@ -169,7 +240,7 @@ class DeliveryAddress(BillingAddress):
             UNSET: _('not set', 'not set'),
         }
 
-provider_registry.add(DeliveryAddress)
+"""provider_registry.add(DeliveryAddress)"""
 
 
 class ShippingSelection(FieldsProvider):
@@ -218,7 +289,7 @@ class ShippingSelection(FieldsProvider):
         # return from request
         return from_request
 
-provider_registry.add(ShippingSelection)
+"""provider_registry.add(ShippingSelection)"""
 
 
 class PaymentSelection(FieldsProvider):
@@ -244,6 +315,90 @@ class PaymentSelection(FieldsProvider):
 provider_registry.add(PaymentSelection)
 
 
+class PaymentMethodSelection(FieldsProvider):
+    fields_template = 'bda.plone.checkout.browser:forms/payment_method_selection.yaml'
+    fields_name = 'payment_method_selection'
+
+    @property
+    def skip(self):
+        cart_data = get_data_provider(self.context, self.request)
+        return not cart_data.total
+
+    @property
+    def methods(self):
+        methods = [{"name":"iDEAL", "id":"ideal"}, {"name":"Creditcard", "id":"creditcard"}]
+        return methods
+
+    @property
+    def methods_vocabulary(self):
+        vocab = list()
+        for method in self.methods:
+            vocab.append((method['id'], method['name']))
+        return vocab
+
+    def get_method(self, widget, data):
+        request = self.request
+        from_request = request.get(widget.dottedpath)
+        from_cookie = request.cookies.get('payment_method_selection')
+
+        if from_request and from_cookie != from_request:
+            request.response.setCookie(
+                'payment_method_selection', from_request, quoted=False, path='/')
+
+        if not from_request and not from_cookie:
+            return "ideal"
+
+        if from_cookie and not from_request:
+            return from_cookie
+
+        return from_request
+        
+provider_registry.add(PaymentMethodSelection)
+
+class BankSelection(FieldsProvider):
+    fields_template = 'bda.plone.checkout.browser:forms/bank_selection.yaml'
+    fields_name = 'bank_selection'
+
+    @property
+    def skip(self):
+        cart_data = get_data_provider(self.context, self.request)
+        return not cart_data.total
+
+    @property
+    def banks(self):
+        banks = get_banks()
+        return banks
+
+    @property
+    def banks_vocabulary(self):
+        vocab = list()
+        for bank in self.banks:
+            vocab.append((bank['id'], bank['name']))
+        
+        vocab.insert(0, ('', _(u'choose_bank_label', default="Kies uw bank")))
+
+        return vocab
+
+    def get_bank(self, widget, data):
+        request = self.request
+        from_request = request.get(widget.dottedpath)
+        from_cookie = request.cookies.get('bank_selection')
+
+        if from_request and from_cookie != from_request:
+            request.response.setCookie(
+                'bank_selection', from_request, quoted=False, path='/')
+
+        if not from_request and not from_cookie:
+            return "ING"
+
+        if from_cookie and not from_request:
+            return from_cookie
+
+        return from_request
+
+provider_registry.add(BankSelection)
+
+
 class OrderComment(FieldsProvider):
     fields_template = 'bda.plone.checkout.browser:forms/order_comment.yaml'
     fields_name = 'order_comment'
@@ -257,7 +412,7 @@ class OrderComment(FieldsProvider):
             return 'hidden'
         return ''
 
-provider_registry.add(OrderComment)
+"""provider_registry.add(OrderComment)"""
 
 
 class AcceptTermsAndConditions(FieldsProvider):

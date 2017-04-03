@@ -119,7 +119,7 @@ msgstr "Country"
 
 #. Default: "Email"
 msgid "label_email"
-msgstr "Email"
+msgstr "Email address"
 
 # First Name
 msgid "label_firstname"
@@ -127,11 +127,11 @@ msgstr "First Name"
 
 #. Default: "Gender"
 msgid "label_gender"
-msgstr "Salutation"
+msgstr "Title"
 
 #. Default: "Name"
 msgid "label_lastname"
-msgstr "Name"
+msgstr "Surname"
 
 #. Default: "Phone"
 msgid "label_phone"
@@ -195,3 +195,13 @@ msgstr "Yes"
 #. Default: "ZIP is required"
 msgid "zip_is_required"
 msgstr "ZIP is required"
+
+#. Default: "ZIP is required"
+msgid "bank_description"
+msgstr "Choose your bank and click on 'Next' to pay with iDEAL"
+
+#. Default: "Test"
+msgid "choose_bank_label"
+msgstr "Choose your bank"
+
+
