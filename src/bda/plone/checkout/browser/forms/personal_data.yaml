@@ -38,6 +38,13 @@ widgets:
         required: i18n:email_is_required:Email is required
         display_proxy: True
     mode: expr:context.mode
+- phone:
+    factory: "#field:text"
+    value: context.get_value
+    props:
+        label: i18n:label_phone:Phone
+        display_proxy: True
+    mode: expr:context.mode
 - country:
     factory: "#field:select"
     value: context.get_value
