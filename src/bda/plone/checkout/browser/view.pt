@@ -17,7 +17,7 @@
 <metal:main fill-slot="main">
   <tal:main-macro metal:define-macro="main">
 
-    <h1 class="documentFirstHeading" i18n:translate="your_order" i18n:domain="bda.plone.cart">Uw Bestelling</h1>
+    <h1 class="documentFirstHeading" i18n:translate="your_order" i18n:domain="bda.plone.cart">Jouw Bestelling</h1>
     
     <div class="tickets-breadcrumbs original" i18n:domain="bda.plone.cart">
       <a href="@@cart"
